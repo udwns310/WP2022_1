@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    @media(max-width:540px){
+      div.empty {display:none}
+      div.vertical {display: block;}
+      div.horizontal {display: none;}
+    }
+    @media (max-width:360px){
+      div.empty {display:block;}
+      div.vertical{display:none;}
+      div.horizontal{display:none;}
+    }
+    @media(min-width:541px){
+      div.empty{display:none;}
+      div.vertical{display:none;}
+      div.horizontal{display:block;}
+    }
+
+    table{
+        padding:30px;
+        background-color:#efefef;
+        
+    }
+   
+    td.cal{
+        line-height: 2.3em;
+        border: 1px solid #999;
+        font-size: 100%;
+        margin-top: 4px;
+        width: 1em;
+        background-color: white;
+    }
+    td.logo{
+        font-family: 'Dokdo', cursive;
+    }
+    button{
+        width:60px;
+        height:60px;
+    }
+    button.operator {
+        background-color:#ffcc00;
+        font-size:x-large;
+        font-weight: bold;
+    }
+    button.func{
+        background-color:#dddddd;
+        font-size:x-large;
+    }
+    button.num{
+        font-weight: bold;
+        font-size:x-large;
+        background-color: #f6f6f6;
+    }
+    button:hover{
+        border: 1px solid #999
+    }
+    button:active {
+            background-color: #ccc; 
+        }
+    @import url('https://fonts.googleapis.com/css2?family=Dokdo&display=swap');
+
+  </style>
+    <script>
+        let savedValue = 0;
+        let curValue = 0;
+        let operator = '';
+        let memory = 0;
+
+        function plusButton() //덧셈
+        {
+            savedValue = parseFloat(document.getElementById("display2").innerHTML);
+            document.getElementById("display2").innerHTML = 0;
+            operator = '+';
+        }
+        function minusButton() //뺄셈
+        {
+            savedValue = parseFloat(document.getElementById("display2").innerHTML);
+            document.getElementById("display2").innerHTML = 0;
+            operator = '-';
+        }
+        function multiplyButton() //곱셈
+        {
+            savedValue = parseFloat(document.getElementById("display2").innerHTML);
+            document.getElementById("display2").innerHTML = 0;
+            operator = '*';
+        }
+        function divisionButton() //나눗셈
+        {
+            savedValue = parseFloat(document.getElementById("display2").innerHTML);
+            document.getElementById("display2").innerHTML = 0;
+            operator = '/';
+        }
+
+        function equalButton() //결과값 계산
+        {
+            if(operator=='+'){
+                savedValue += parseFloat(document.getElementById('display2').innerHTML);
+                document.getElementById('display2').innerHTML = savedValue;
+            }
+            else if(operator=='-'){
+                savedValue -= parseFloat(document.getElementById('display2').innerHTML);
+                document.getElementById('display2').innerHTML = savedValue;
+            }       
+            else if(operator=='*'){
+                savedValue *= parseFloat(document.getElementById('display2').innerHTML);
+                document.getElementById('display2').innerHTML = savedValue;
+            }
+            else if(operator=='/'){
+                savedValue /= parseFloat(document.getElementById('display2').innerHTML);
+                document.getElementById('display2').innerHTML = savedValue;
+            }
+           
+        }
+
+        function numberButton(num) //숫자값 표시
+        {
+            if(document.getElementById('display2').innerHTML=='0'){
+                document.getElementById('display2').innerHTML = num;
+            }
+            else{
+                document.getElementById('display2').innerHTML += num;
+            }
+        }
+
+       function signButton() //부호 변환
+       {
+           curValue =  parseFloat(document.getElementById('display2').innerHTML) * -1;
+           document.getElementById('display2').innerHTML = curValue;
+       }
+
+       function piButton() //파이
+       {
+           curValue =  parseFloat(document.getElementById('display2').innerHTML) * Math.PI;
+           document.getElementById('display2').innerHTML = curValue;
+       }
+
+       function percentButton() //백분율
+       {
+           curValue =  parseFloat(document.getElementById('display2').innerHTML) * 0.01;
+           document.getElementById('display2').innerHTML = curValue;
+       }
+
+       function sqrtButton() //제곱근
+       {
+           curValue =  Math.sqrt(parseFloat(document.getElementById('display2').innerHTML));
+           document.getElementById('display2').innerHTML = curValue;
+       }
+
+       function powButton() //제곱
+       {
+           curValue = Math.pow(parseFloat(document.getElementById('display2').innerHTML),2);
+           document.getElementById('display2').innerHTML = curValue;
+       }
+
+       function R2Button() //소수점 2자리
+       {
+           curValue = parseFloat(document.getElementById('display2').innerHTML);
+           let fixedValue = (curValue.toFixed(2)); 
+           document.getElementById('display2').innerHTML = fixedValue;
+       }
+
+       function R0Button() //소수점 0자리
+       {
+           curValue = parseFloat(document.getElementById('display2').innerHTML);
+           let fixedValue = (curValue.toFixed()); 
+           document.getElementById('display2').innerHTML = fixedValue;
+       }
+
+       function resetButton() //계산기 초기화
+       {
+           savedValue =  parseFloat(document.getElementById('display2').innerHTML) * 0;
+           document.getElementById('display2').innerHTML = savedValue;
+       }
+
+       function memoryPlus() //입력값을 양수로 저장 
+       {
+         memory += parseFloat(document.getElementById('display2').innerHTML);
+       }
+
+       function memoryMinus() //입력값을 음수로 저장
+       {
+         memory +=  parseFloat(document.getElementById('display2').innerHTML) * -1;
+       }
+      
+       function memoryRecall() //메모리에 저장한 값 불러오기
+       {
+        document.getElementById('display2').innerHTML = memory;
+       }
+
+       function memoryClear() //m+,m-에 저장된 모든 값 초기화
+       {
+         memory = 0;
+       }
+
+       
+    </script>
+</head>
+<body>
+  <div class="empty"><p>표시할 수 없음.</p></div>
+
+  <div class="vertical">
+      
+    <table width=300 height=600>
+        <colgroup>
+            <col width="60"><col width="60"><col width="60"><col width="60"><col width="60"><col width="60"><col width="60">
+        </colgroup>
+      <tr><td class="cal" colspan="4" align="right"><span id="display1">0</span></td></tr>
+      <tr>
+        <td><button class="func">mc</button></td>
+        <td><button class="func">m+</button></td>
+        <td><button class="func">m-</button></td>
+        <td><button class="func">mr</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">AC</button></td>
+        <td><button class="func">√x</button></td>
+        <td><button class="func">%</button></td>
+        <td><button class="operator">÷</button></td>
+      </tr>
+      <tr>
+        <td><button class="num" onclick='numberButton(7);'>7</button></td>
+        <td><button class="num" onclick='numberButton(8);'>8</button></td>
+        <td><button class="num" onclick='numberButton(9);'>9</button></td>
+        <td><button class="operator">×</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">4</button></td>
+        <td><button class="num">5</button></td>
+        <td><button class="num">6</button></td>
+        <td><button class="operator">－</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">1</button></td>
+        <td><button class="num">2</button></td>
+        <td><button class="num">3</button></td>
+        <td><button class="operator">＋</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">0</button></td>
+        <td><button class="num">.</button></td>
+        <td><button class="num">+/-</button></td>
+        <td><button class="operator">=</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">&pi;</button></td>
+        <td><button class="func">x<sup>2</sup></button></td>
+        <td><button class="func">R2</button></td>
+        <td><button class="func">R0</button></td>
+      </tr>
+      <tr>
+        <td colspan="7" align=center>	
+          <a class="z100" href="https://www.calculatorsoup.com/calculators/calculator-widgets.php?folder=math%2F&folderName=Math&folder2=&folderName2=&calc=1&pop=1&url=https://www.calculatorsoup.com/calculators/math/basic.php&h1=Basic+Calculator&pop_w=400&pop_h=600" rel="nofollow">Get a Widget for this Calculator</a>
+      </td>
+    </tr>
+      <tr>
+          <td class="logo" colspan="4" align="right">&copy;20193135_최영준</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="horizontal">
+    <table width=500 height=400 >
+        <colgroup>
+            <col width="20"><col width="20"><col width="20">
+        </colgroup>
+      <tr><td class="cal" colspan="7" align="right"><span id="display2">0</span></td></tr>
+      <tr>
+        <td><button class="func" onclick="memoryClear();">mc</button></td>
+        <td><button class="func" onclick="memoryPlus();">m+</button></td>
+        <td><button class="num" onclick='numberButton(7);'>7</button></td>
+        <td><button class="num" onclick='numberButton(8);'>8</button></td>
+        <td><button class="num" onclick='numberButton(9);'>9</button></td>
+        <td><button class="operator" onclick="divisionButton();">÷</button></td>
+        <td><button class="func" onclick="R2Button();">R2</button></td>
+      </tr>
+      <tr>
+        <td><button class="func" onclick="memoryMinus();">m-</button></td>
+        <td><button class="func" onclick="memoryRecall();">mr</button></td>
+        <td><button class="num" onclick='numberButton(4);'>4</button></td>
+        <td><button class="num" onclick='numberButton(5);'>5</button></td>
+        <td><button class="num" onclick='numberButton(6);'>6</button></td>
+        <td><button class="operator" onclick="multiplyButton();">×</button></td>
+        <td><button class="func" onclick="R0Button();">R0</button></td>
+      </tr>
+      <tr>
+        <td><button class="func" onclick="piButton();">&pi;</button></td>
+        <td><button class="func" onclick="powButton();">x<sup>2</sup></button></td>
+        <td><button class="num" onclick='numberButton(1);'>1</button></td>
+        <td><button class="num" onclick='numberButton(2);'>2</button></td>
+        <td><button class="num" onclick='numberButton(3);'>3</button></td>
+        <td><button class="operator" onclick="minusButton();">-</button></td>
+        <td><button class="func" onclick='resetButton();'>AC</button></td>
+      </tr>
+      <tr>
+        <td><button class="func" onclick="sqrtButton();">√x</button></td>
+        <td><button class="func" onclick="percentButton();">%</button></td>
+        <td><button class="num" onclick='numberButton(0);'>0</button></td>
+        <td><button class="num" onclick='numberButton(".");'>.</button></td>
+        <td><button class="num" onclick='signButton();'>+/-</button></td>
+        <td><button class="operator" onclick="plusButton()">+</button></td>
+        <td><button class="operator" onclick="equalButton()">=</button></td>
+      </tr>
+      
+      <tr>
+        <td colspan="6" align="right">	
+          <a class="z100" href="https://www.calculatorsoup.com/calculators/calculator-widgets.php?folder=math%2F&folderName=Math&folder2=&folderName2=&calc=1&pop=1&url=https://www.calculatorsoup.com/calculators/math/basic.php&h1=Basic+Calculator&pop_w=400&pop_h=600" rel="nofollow">Get a Widget for this Calculator</a>
+      </td>
+    </tr>
+     
+      <tr>
+          <td class=logo colspan="7" align="right">&copy;20193135_최영준</td>
+      </tr>
+    </table>
+    <ol>
+      <li>mc= Memory Clear</li>
+      <li>m+= Memory Plus</li>
+      <li>m-= Memory Minus</li>
+      <li>mr= Memory Recall</li>
+      <li>CE= Clear Entry</li>
+      <li>AC= All Clear</li>
+      <li>√x= Square Root</li>
+      <li>+/-= Plus/Minus</li>
+      <li>&pi;= Pi</li>
+      <li>x<sup>2</sup>= Square:</li>
+      <li>R2= Round to 2 Decimals</li>
+      <li>R0= Round to 0 Decimals</li>
+      <li>%= Percent</li>
+    </ol>
+
+  </div>
+
+</body>
+</html>
