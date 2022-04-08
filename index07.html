@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style>
+    @media(max-width:540px){
+      div.empty {display:none}
+      div.vertical {display: block;}
+      div.horizontal {display: none;}
+    }
+    @media (max-width:360px){
+      div.empty {display:block;}
+      div.vertical{display:none;}
+      div.horizontal{display:none;}
+    }
+    @media(min-width:541px){
+      div.empty{display:none;}
+      div.vertical{display:none;}
+      div.horizontal{display:block;}
+    }
+    #display{
+
+    }
+
+    table{
+        padding:30px;
+        background-color:#efefef;
+        
+    }
+   
+    td.cal{
+        line-height: 2.3em;
+        border: 1px solid #999;
+        font-size: 100%;
+        margin-top: 4px;
+        width: 1em;
+        background-color: white;
+    }
+    td.logo{
+        font-family: 'Dokdo', cursive;
+    }
+    button{
+        width:60px;
+        height:60px;
+    }
+    button.operator {
+        background-color:#ffcc00;
+        font-size:x-large;
+        font-weight: bold;
+    }
+    button.func{
+        background-color:#dddddd;
+        font-size:x-large;
+    }
+    button.num{
+        font-weight: bold;
+        font-size:x-large;
+        background-color: #f6f6f6;
+    }
+    button:hover{
+        border: 1px solid #999
+    }
+    button:active {
+            background-color: #ccc; /*cursor:pointer;*/
+        }
+    @import url('https://fonts.googleapis.com/css2?family=Dokdo&display=swap');
+
+
+  </style>
+</head>
+<body>
+  <div class="empty"><p>표시할 수 없음.</p></div>
+
+  <div class="vertical">
+      
+    <table width=300 height=600>
+        <colgroup>
+            <col width="60"><col width="60"><col width="60"><col width="60"><col width="60"><col width="60"><col width="60">
+        </colgroup>
+      <tr><td class="cal" colspan="4" align="right"><span id="display">30</span></td></tr>
+      <tr>
+        <td><button class="func">mc</button></td>
+        <td><button class="func">m+</button></td>
+        <td><button class="func">m-</button></td>
+        <td><button class="func">mr</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">CE</button></td>
+        <td><button class="func">√x</button></td>
+        <td><button class="func">%</button></td>
+        <td><button class="operator">÷</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">7</button></td>
+        <td><button class="num">8</button></td>
+        <td><button class="num">9</button></td>
+        <td><button class="operator">×</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">4</button></td>
+        <td><button class="num">5</button></td>
+        <td><button class="num">6</button></td>
+        <td><button class="operator">－</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">1</button></td>
+        <td><button class="num">2</button></td>
+        <td><button class="num">3</button></td>
+        <td><button class="operator">＋</button></td>
+      </tr>
+      <tr>
+        <td><button class="num">0</button></td>
+        <td><button class="num">.</button></td>
+        <td><button class="num">+/-</button></td>
+        <td><button class="operator">=</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">&pi;</button></td>
+        <td><button class="func">x<sup>2</sup></button></td>
+        <td><button class="func">R2</button></td>
+        <td><button class="func">R0</button></td>
+      </tr>
+      <tr>
+        <td colspan="7" align=center>	
+          <a class="z100" href="https://www.calculatorsoup.com/calculators/calculator-widgets.php?folder=math%2F&folderName=Math&folder2=&folderName2=&calc=1&pop=1&url=https://www.calculatorsoup.com/calculators/math/basic.php&h1=Basic+Calculator&pop_w=400&pop_h=600" rel="nofollow">Get a Widget for this Calculator</a>
+      </td>
+    </tr>
+      <tr>
+          <td class="logo" colspan="4" align="right">&copy;20193135_최영준</td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="horizontal">
+    <table width=500 height=400 >
+        <colgroup>
+            <col width="20"><col width="20"><col width="20">
+        </colgroup>
+      <tr><td class="cal" colspan="7" align="right"><span id="display">30</span></td></tr>
+      <tr>
+        <td><button class="func">mc</button></td>
+        <td><button class="func">m+</button></td>
+        <td><button class="num">7</button></td>
+        <td><button class="num">8</button></td>
+        <td><button class="num">9</button></td>
+        <td><button class="operator">÷</button></td>
+        <td><button class="func">R2</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">m-</button></td>
+        <td><button class="func">mr</button></td>
+        <td><button class="num">4</button></td>
+        <td><button class="num">5</button></td>
+        <td><button class="num">6</button></td>
+        <td><button class="operator">×</button></td>
+        <td><button class="func">R0</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">&pi;</button></td>
+        <td><button class="func">x<sup>2</sup></button></td>
+        <td><button class="num">1</button></td>
+        <td><button class="num">2</button></td>
+        <td><button class="num">3</button></td>
+        <td><button class="operator">-</button></td>
+        <td><button class="func">CE</button></td>
+      </tr>
+      <tr>
+        <td><button class="func">√x</button></td>
+        <td><button class="func">%</button></td>
+        <td><button class="num">0</button></td>
+        <td><button class="num">.</button></td>
+        <td><button class="num">+/-</button></td>
+        <td><button class="operator">+</button></td>
+        <td><button class="operator">=</button></td>
+      </tr>
+      
+      <tr>
+        <td colspan="6" align="right">	
+          <a class="z100" href="https://www.calculatorsoup.com/calculators/calculator-widgets.php?folder=math%2F&folderName=Math&folder2=&folderName2=&calc=1&pop=1&url=https://www.calculatorsoup.com/calculators/math/basic.php&h1=Basic+Calculator&pop_w=400&pop_h=600" rel="nofollow">Get a Widget for this Calculator</a>
+      </td>
+    </tr>
+     
+      <tr>
+          <td class=logo colspan="7" align="right">&copy;20193135_최영준</td>
+      </tr>
+    </table>
+
+  </div>
+
+</body>
+</html>
