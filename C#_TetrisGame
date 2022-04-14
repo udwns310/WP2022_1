@@ -1,0 +1,220 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+
+namespace tetris
+{
+    internal class Program
+    {
+        enum BLOCK
+        {
+            O = 0, I, J, L, Z, S, T
+        }
+
+        enum STATE
+        {
+            INIT, DOWN, DROP, GROUND
+        }
+
+        static ConsoleColor[] blockColor = 
+            { ConsoleColor.Yellow, ConsoleColor.Gray, ConsoleColor.Green,
+              ConsoleColor.Blue, ConsoleColor.Cyan, ConsoleColor.Magenta, ConsoleColor.Red };
+
+        static Random rand = null;
+        static int GetRandom(int lower, int upper)
+        {
+            if(rand == null)
+                rand = new Random();
+            return rand.Next(lower, upper);
+        }
+
+        struct Pos
+        {
+            public int row;
+            public int col;
+            public Pos(int r, int c)
+            {
+                row = r;
+                col = c;
+            }
+
+        }
+
+        struct BlockPos
+        {
+            public BlockPos(bool buf = true)
+            {
+                width = 0;
+                height = 0;
+                relative = new Pos[4];
+            }
+
+            public int width;
+            public int height;
+            public Pos[] relative;
+
+        }
+        const int Width = 10;
+        const int Height = 20;
+        const int BLOCK_NUM = 7;
+
+        static void DrawBoard(int[,] data){
+            Console.SetCursorPosition(0,0);
+            Console.ForegroundColor= ConsoleColor.White;
+            Console.Write("┏"); 
+            for (int i = 0; i <= Width * 2; i++) 
+                Console.Write("━"); 
+               Console.Write("┓ \n");
+
+            for (int i = 0; i < Height; i++)
+            {
+                Console.Write("┃ ");
+                for (int j = 0; j < Width; j++)
+                {
+                    if (data[i, j] == -1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("..");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = blockColor[data[i, j]];
+                        Console.Write("■");
+                    }
+                }
+                Console.ForegroundColor=ConsoleColor.White;
+                Console.Write("┃\n");
+            }
+
+
+            Console.Write("┗"); 
+            for (int i = 0; i <= Width * 2; i++) 
+                Console.Write("━");
+            Console.Write("┛\n");
+
+        }
+
+        static void Main(string[] args)
+        {
+            int[,] board = new int[Height, Width];
+            for (int x = 0; x < Height; x++)
+                for (int y = 0; y < Width; y++)
+                    board[x, y] = -1;
+
+            BlockPos[] blocks = new BlockPos[BLOCK_NUM];
+            blocks[(int)BLOCK.O].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(1, 0), new Pos(1, 1) };
+            blocks[(int)BLOCK.O].height = 2; blocks[(int)BLOCK.O].width = 2;
+
+            blocks[(int)BLOCK.I].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(0, 2), new Pos(0, 3) };
+            blocks[(int)BLOCK.I].height = 1; blocks[(int)BLOCK.I].width = 4;
+
+            blocks[(int)BLOCK.J].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(0, 2), new Pos(1, 2) };
+            blocks[(int)BLOCK.J].height = 2; blocks[(int)BLOCK.J].width = 3;
+
+            blocks[(int)BLOCK.L].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(0, 2), new Pos(1, 0) };
+            blocks[(int)BLOCK.L].height = 2; blocks[(int)BLOCK.L].width = 3;
+
+            blocks[(int)BLOCK.Z].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(1, 1), new Pos(1, 2) };
+            blocks[(int)BLOCK.Z].height = 2; blocks[(int)BLOCK.Z].width = 3;
+
+            blocks[(int)BLOCK.S].relative = new Pos[4] { new Pos(0, 1), new Pos(0, 2), new Pos(1, 0), new Pos(1, 1) };
+            blocks[(int)BLOCK.S].height = 2; blocks[(int)BLOCK.S].width = 3;
+
+            blocks[(int)BLOCK.T].relative = new Pos[4] { new Pos(0, 0), new Pos(0, 1), new Pos(0, 2), new Pos(1, 1) };
+            blocks[(int)BLOCK.T].height = 2; blocks[(int)BLOCK.T].width = 3;
+
+            Pos curBlockPos = new Pos(0, Width/2-2);
+            int curBlockShape = (int)BLOCK.T;
+            BlockPos curBlock = new BlockPos();
+            Console.CursorVisible = false;
+
+            STATE gameState = STATE.INIT;
+
+
+            //MakeBlock();
+            while (true)
+            {
+                switch (gameState)
+                {
+                    case STATE.INIT:
+                        MakeBlock();
+                        gameState = STATE.DOWN;
+                        break;
+
+                    case STATE.DOWN:
+                        UpdateBlock(0);
+                        break;
+
+                }
+                
+
+                ConsoleKeyInfo key = new ConsoleKeyInfo();
+                if (Console.KeyAvailable)
+                {
+                    key = Console.ReadKey(true);
+                       if (key.Key == ConsoleKey.RightArrow)
+                             UpdateBlock(1);
+                       if (key.Key == ConsoleKey.LeftArrow)
+                              UpdateBlock(2);
+                }
+                
+                DrawBoard(board);
+                Thread.Sleep(100);
+                
+            }
+
+            void MakeBlock()
+            {
+                curBlockShape = GetRandom(0, BLOCK_NUM);
+                curBlock = blocks[curBlockShape];
+
+                foreach (var pos in curBlock.relative)
+                    board[curBlockPos.row + pos.row, curBlockPos.col + pos.col] = curBlockShape;
+            }
+
+            void UpdateBlock(int type)
+            {
+                Pos prevBlockPos = curBlockPos;
+                Pos[] prevBlock = new Pos[4];
+
+                switch (type)
+                {
+                    case 0: //자동 내려가기
+                        foreach (var pos in curBlock.relative)
+                            board[prevBlockPos.row + pos.row, prevBlockPos.col + pos.col] = -1;
+                        curBlockPos.row++;
+
+                        foreach (var pos in curBlock.relative)
+                            board[curBlockPos.row + pos.row, curBlockPos.col + pos.col] = curBlockShape;
+                        break;
+
+                    case 1: //오른쪽키
+                        foreach (var pos in curBlock.relative)
+                            board[prevBlockPos.row + pos.row, prevBlockPos.col + pos.col] = -1;
+                        curBlockPos.col++;
+
+                        foreach (var pos in curBlock.relative)
+                            board[curBlockPos.row + pos.row, curBlockPos.col + pos.col] = curBlockShape;
+                        break;
+
+                    case 2: //왼쪽키
+                        foreach (var pos in curBlock.relative)
+                            board[prevBlockPos.row + pos.row, prevBlockPos.col + pos.col] = -1;
+                        curBlockPos.col--;
+
+                        foreach (var pos in curBlock.relative)
+                            board[curBlockPos.row + pos.row, curBlockPos.col + pos.col] = curBlockShape;
+                        break;
+                }
+
+                
+
+                
+            }
+
+        }
+    }
+}
