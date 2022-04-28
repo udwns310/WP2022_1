@@ -69,7 +69,7 @@
         function NextGeneration(){
             console.log(curr);
             for(let id = 0; id<arraySize; id++) next[id] = nextState(id);
-            for(let id = 0; id<arraySize; id++) curr[id] = next(id);
+            for(let id = 0; id<arraySize; id++) curr[id] = next[id];
             drawWorld();
         }
 
