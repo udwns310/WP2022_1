@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class phoneData{
+public:
+	phoneData(string name, string phoneNumber, string address);
+	void printPD();	
+	// private:
+	string name_;
+	string phoneNumber_;
+	string address_;
+};
+
+class phoneNode {
+public:
+	phoneNode(phoneData* data, phoneNode* next);
+	phoneNode* next_;
+	phoneData* data_;
+};
+
+class phoneBook {
+public:
+	phoneBook();
+	bool Insert(phoneData* data);
+	phoneData* Delete(string name);
+	phoneData* Find(string name);
+private:
+	phoneNode* lst_;
+};
+
+phoneData::phoneData(string n, string pn, string ad) {
+
+}
+
+void phoneData::printPD(){
+	cout << "name : " << name_ << "phone number : " << phoneNumber_ << "address : " << address_;
+}
+
+phoneBook::Delete(string name) {
+	phoneNode* ptr = lst_;
+	if (lst_ == 0) return;
+	if (lst_->data_ == name) {
+		lst_ = lst_->next_;
+		delete ptr;
+		return;
+	}
+
+
+}
+
+phoneBook::phoneBook() {
+	lst_ = 0;
+}
+
+bool phoneBook::Insert(phoneData* data) {
+	return data;
+}
+
+
+
+
+
+
+int main() {
+	phoneBook* pb = new phoneBook();
+	phoneData* pd = new phoneData("someone", "010-2345-6789", "DEU");
+	pb->Insert(pd);
+	pd = new phoneData("nobody", "010-9876-5432", "DEU");
+	pb->Insert(pd);
+
+	pd = pb->Find("someone");
+	if (pd) pd->printPD();
+
+	pd = pb->Find("nobody");
+	if (pd) pd->printPD();
+
+	pb->Delete("nobody");
+
+	pd = pb->Find("someone");
+	if (pd) pd->printPD();
+	pd = pb->Find("nobody");
+	if (pd) pd->printPD();
+}
