@@ -2,10 +2,10 @@
 #include <string>
 using namespace std;
 
-class phoneData{
+class phoneData {
 public:
 	phoneData(string name, string phoneNumber, string address);
-	void printPD();	
+	void printPD();
 	// private:
 	string name_;
 	string phoneNumber_;
@@ -29,24 +29,21 @@ private:
 	phoneNode* lst_;
 };
 
-phoneData::phoneData(string n, string pn, string ad) {
+//###################################
 
+phoneData::phoneData(string name, string phoneNumber, string address) {
+	name_ = name;
+	phoneNumber_ = phoneNumber;
+	address_ = address;
 }
 
-void phoneData::printPD(){
+void phoneData::printPD() {
 	cout << "name : " << name_ << "phone number : " << phoneNumber_ << "address : " << address_;
 }
 
-phoneBook::Delete(string name) {
-	phoneNode* ptr = lst_;
-	if (lst_ == 0) return;
-	if (lst_->data_ == name) {
-		lst_ = lst_->next_;
-		delete ptr;
-		return;
-	}
-
-
+phoneNode::phoneNode(phoneData* data, phoneNode* next) {
+	data_ = data;
+	next_ = next;
 }
 
 phoneBook::phoneBook() {
@@ -54,10 +51,66 @@ phoneBook::phoneBook() {
 }
 
 bool phoneBook::Insert(phoneData* data) {
-	return data;
+	if (lst_ == 0) {
+		lst_ = new phoneNode(data, 0);
+		return true;
+		
+	}
+
+	if (data < lst_->data_) {
+		lst_ = new phoneNode(data, lst_);
+		return true;
+		
+	}
+	phoneNode* ptr = lst_;
+	while (ptr->next_ != 0 && ptr->next_->data_ < data) {
+	ptr = ptr->next_;
+	}
+	ptr->next_ = new phoneNode(data, ptr->next_);
+	return true;
+	
 }
 
 
+phoneData* phoneBook::Delete(string name) {
+	phoneNode* ptr = lst_;
+	if (lst_ == 0) return;
+	if (lst_->data_->name_ == name) {
+		lst_ = lst_->next_;
+		delete ptr;
+		return;
+	}
+	while (ptr->next_ != 0 && ptr->next_->data_->name_ != name) {
+		ptr = ptr->next_;
+	}
+	if (ptr->next_ == 0) return;
+	phoneNode* dptr = ptr->next_;
+	ptr->next_ = ptr->next_->next_;
+	lst_->data_->name_ = dptr->data_->name_;
+	return;
+
+}
+
+phoneData* phoneBook::Find(string name) {
+	phoneNode* ptr = lst_;
+	if (lst_ == 0) return;
+	if (lst_->data_->name_ == name) {
+		
+		return;
+	}
+	while (ptr->next_ != 0 && ptr->next_->data_->name_ != name) {
+		ptr = ptr->next_;
+	}
+	if (ptr->next_ == 0) return;
+	phoneNode* dptr = ptr->next_;
+	ptr->next_ = ptr->next_->next_;
+	lst_->data_->name_ = dptr->data_->name_;
+	return;
+
+
+}
+
+// ###########################################
 
 
 
