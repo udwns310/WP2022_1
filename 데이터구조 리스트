@@ -38,7 +38,7 @@ phoneData::phoneData(string name, string phoneNumber, string address) {
 }
 
 void phoneData::printPD() {
-	cout << "name : " << name_ << "phone number : " << phoneNumber_ << "address : " << address_;
+	cout << "name : " << name_ << " phone number : " << phoneNumber_ << " address : " << address_ << ' ';
 }
 
 phoneNode::phoneNode(phoneData* data, phoneNode* next) {
@@ -54,59 +54,54 @@ bool phoneBook::Insert(phoneData* data) {
 	if (lst_ == 0) {
 		lst_ = new phoneNode(data, 0);
 		return true;
-
+		
 	}
 
 	if (data < lst_->data_) {
 		lst_ = new phoneNode(data, lst_);
 		return true;
-
+		
 	}
 	phoneNode* ptr = lst_;
-	while (ptr->next_ != 0 ) {
-		ptr = ptr->next_;
+	while (ptr->next_ != 0 && ptr->next_->data_ < data) {
+	ptr = ptr->next_;
 	}
 	ptr->next_ = new phoneNode(data, ptr->next_);
 	return true;
-
+	
 }
 
 
 phoneData* phoneBook::Delete(string name) {
 	phoneNode* ptr = lst_;
-	if (lst_ == 0) return;
+	if (lst_ == 0) return 0;
 	if (lst_->data_->name_ == name) {
 		lst_ = lst_->next_;
 		delete ptr;
-		return;
+		return 0;
 	}
 	while (ptr->next_ != 0 && ptr->next_->data_->name_ != name) {
 		ptr = ptr->next_;
 	}
-	if (ptr->next_ == 0) return;
+	if (ptr->next_ == 0) return 0;
 	phoneNode* dptr = ptr->next_;
 	ptr->next_ = ptr->next_->next_;
-	lst_->data_->name_ = dptr->data_->name_;
-	return;
-
+	delete dptr;
+	return 0;
 }
 
 phoneData* phoneBook::Find(string name) {
-	phoneData* pd;
-
 	phoneNode* ptr = lst_;
-	if (lst_ == 0) return;
+	if (lst_ == 0) return 0;
 	if (lst_->data_->name_ == name) {
-
-		return;
+		
+		return lst_->data_;
 	}
 	while (ptr->next_ != 0 && ptr->next_->data_->name_ != name) {
 		ptr = ptr->next_;
 	}
-	if (ptr->next_ == 0) return;
-	if (ptr->next_->data_->name_ == name) return;
-
-
+	if (ptr->next_ == 0) return 0;
+	return ptr->next_->data_;
 }
 
 // ###########################################
@@ -133,4 +128,4 @@ int main() {
 	if (pd) pd->printPD();
 	pd = pb->Find("nobody");
 	if (pd) pd->printPD();
-}	
+}
