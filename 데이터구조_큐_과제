@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+#define ERROR -1;
+
+class queue3 {
+public:
+    queue3() {
+        rear = 0;
+    }
+    bool IsEmpty() { return (rear == 0); };
+    bool IsFull() { return (rear == 3); };
+    bool InsertQ(int el) {
+        if (rear == 3) return false;
+        arr[rear++] = el;
+        return true;
+    }
+    int DeleteQ() {
+        if (rear == 0) return -1;
+        int el = arr[0];
+        rear--;
+        for (int i = 0; i < rear; i++) arr[i] = arr[i + 1];
+        return el;
+    }
+private:
+    int arr[3];
+    int rear;
+};
+
+class queue9 {
+public:
+    queue9();
+    bool IsEmpty();
+    bool IsFull();
+    bool InsertQ(int el);
+    int DeleteQ();
+private:
+    queue3 q1;
+    queue3* q2;
+    queue3* q3;
+};
+
+//######################################################################
+
+queue9::queue9() {
+    q2 = 0;
+    q3 = 0;
+}
+    
+bool queue9::IsEmpty() {
+    if (q1.IsEmpty() == 0) return true;
+    return false;
+}
+
+bool queue9::IsFull() {
+    if (q3->IsFull() == true) return false;
+}
+
+bool queue9::InsertQ(int el) {
+    
+    if (q1.InsertQ(el) == false) {
+        q2->InsertQ(el);
+    }
+    if (q2->InsertQ(el) == false) {
+        q3->InsertQ(el);
+    }
+    if (q3->InsertQ(el) == false) return false;
+
+    q1.InsertQ(el);
+}
+
+int queue9::DeleteQ() {
+       
+    if (q1.DeleteQ() == -1) return  q2->DeleteQ();
+    
+    if (q2->DeleteQ() == -1) return q3->DeleteQ();
+
+    return q1.DeleteQ();
+}
+//######################################################################
+
+int main() {
+    int n, i, a;
+    queue9* q = new queue9();
+
+    cin >> n;
+    for (i = 0; i < n; i++) {
+        cin >> a;
+        if (a == 0) cout << q->DeleteQ() << " ";
+        else q->InsertQ(a);
+    }
+    return 0;
+};
