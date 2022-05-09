@@ -52,7 +52,8 @@ bool queue9::IsEmpty() {
 }
 
 bool queue9::IsFull() {
-    if (q3->IsFull() == true) return false;
+    if (q3->IsFull() == true) return true;
+    return false;
 }
 
 bool queue9::InsertQ(int el) {
@@ -66,6 +67,7 @@ bool queue9::InsertQ(int el) {
     if (q3->InsertQ(el) == false) return false;
 
     q1.InsertQ(el);
+    return true;
 }
 
 int queue9::DeleteQ() {
@@ -74,7 +76,8 @@ int queue9::DeleteQ() {
     
     if (q2->DeleteQ() == -1) return q3->DeleteQ();
 
-    return q1.DeleteQ();
+    q1.DeleteQ();
+    return 0;
 }
 //######################################################################
 
