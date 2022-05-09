@@ -42,42 +42,33 @@ private:
 //######################################################################
 
 queue9::queue9() {
-    q2 = 0;
-    q3 = 0;
+    q1 = queue3();
+    q2 = new queue3();
+    q3 = new queue3();
 }
-    
+
 bool queue9::IsEmpty() {
-    if (q1.IsEmpty() == 0) return true;
-    return false;
+    return q1.IsEmpty();
 }
 
 bool queue9::IsFull() {
-    if (q3->IsFull() == true) return true;
-    return false;
+    return q3->IsFull();
 }
 
 bool queue9::InsertQ(int el) {
-    
-    if (q1.InsertQ(el) == false) {
-        q2->InsertQ(el);
-    }
-    if (q2->InsertQ(el) == false) {
-        q3->InsertQ(el);
-    }
-    if (q3->InsertQ(el) == false) return false;
 
-    q1.InsertQ(el);
-    return true;
+    if (q3->IsFull()) q3->InsertQ(el);
+    else if (q2->IsFull()) q2->InsertQ(el);
+    else if (q1.IsFull()) q1.InsertQ(el); 
+    return ERROR;
 }
 
 int queue9::DeleteQ() {
-       
-    if (q1.DeleteQ() == -1) return  q2->DeleteQ();
-    
-    if (q2->DeleteQ() == -1) return q3->DeleteQ();
 
-    q1.DeleteQ();
-    return 0;
+    if (q3->IsEmpty()) q3->DeleteQ();
+    else if(q2->IsEmpty()) q2->DeleteQ();
+    else if (q1.IsEmpty()) q1.DeleteQ();
+    return ERROR;
 }
 //######################################################################
 
@@ -92,4 +83,4 @@ int main() {
         else q->InsertQ(a);
     }
     return 0;
-};
+};              
