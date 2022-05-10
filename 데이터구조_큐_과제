@@ -57,21 +57,21 @@ bool queue9::IsFull() {
 
 bool queue9::InsertQ(int el) {
 
-    if (q3->IsFull()) {
+    if (!(q3->IsFull())) {
         return q3->InsertQ(el);
     }
-    else if (q2->IsFull()) {
+    else if (!(q2->IsFull())) {
         return q2->InsertQ(el);
     }
-    else if (q1.IsFull()) { return q1.InsertQ(el); }
+    else if (!(q1.IsFull())) { return q1.InsertQ(el); }
     return ERROR;
 }
 
 int queue9::DeleteQ() {
 
-    if (q3->IsEmpty())  return q3->DeleteQ();
-    else if(q2->IsEmpty()) return q2->DeleteQ();
-    else if (q1.IsEmpty()) return q1.DeleteQ();
+    if (!(q3->IsEmpty()))  return q3->DeleteQ();
+    else if (!(q2->IsEmpty())) return q2->DeleteQ();
+    else if (!(q1.IsEmpty())) return q1.DeleteQ();
     return ERROR;
 }
 //######################################################################
@@ -87,4 +87,4 @@ int main() {
         else q->InsertQ(a);
     }
     return 0;
-};              
+};
