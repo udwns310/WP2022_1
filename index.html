@@ -54,6 +54,7 @@
         let isStarted = false;
         const nBombs=99;
         let curTime=0;
+        const neighbor = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
 
         var cells = Array(arraySize); //0: empty, 1: bomb, 2: checked bomb (closed) / 10, 11, 12 (open)
         cells.fill(0);
@@ -66,45 +67,41 @@
             document.write("<br/>");
         }
 
-        function leftClick(element, id){
-            const i = parseInt(id / width);
-            const j = id % width;
-            let ii, jj;
-            if(isStarted == false){
-                for(k=0; k<nBombs; k++){
-                    ii = i; jj= j;
-                    while((ii-i) * (ii-i) < 2) ii= Math.floor((Math.random() * height));
-                    while((jj-j) * (jj-j) < 2) jj= Math.floor((Math.random() * width));
-                    document.getElementById(String(ii * width + jj)).style.backgroundColor = 'black';
-                    cells[ii * width + jj] = 1;
-                }
-                myInterval = setInterval(timeCount, 1000);
-                isStarted == true;
-            }
-            else{
-                openCell(i, j);
-
-            }
+        function leftClick(element, id) {
+        const i = parseInt(id/width);
+        const j = id%width;
+        let ii, jj;
+        if (isStarted == false) {
+          for (k=0; k<nBombs; k++) {
+            ii = i; jj = j;
+            while ((ii-i)*(ii-i)<2) ii = Math.floor((Math.random() * height));
+            while ((jj-j)*(jj-j)<2) jj = Math.floor((Math.random() * width));
+            document.getElementById(String(ii*width+jj)).style.backgroundColor = 'black';
+            cells[ii*width+jj] = 1;
+          }
+          myInterval = setInterval(timeCount, 1000);
+          isStarted = true;
         }
-        function openCell(i,j){
-            if(cells[i*width+j]<2) return;
-            if(cells[i*width+j] ==1) alert;
+        openCell(i, j);
+      }
+        function openCell(i, j) {
+            if (cells[i*width+j] >1) return;
+            if (cells[i*width+j] == 1) alert('게임종료');
             let bombCount=0;
             let ii;
             let jj;
-            for (let k=0; k<8; k++){
-                ii = i + neighbor[k][0];
-                jj = i + neighbor[k][1];
-                if(ii<0 || ii >= height) continue;
-                if(jj<0 || jj >= width) continue;
-                if(cells[ii*width+jj] ==1) bombCount++;
-                
+            for (let k=0; k<8; k++) {
+                ii = i+ neighbor[k][0];
+                jj = j+ neighbor[k][1];
+                if (ii<0 || ii>=height) continue;
+                if (jj<0 || jj>=width) continue;
+                if (cells[ii*width+jj] == 1) bombCount++;
             }
-            document.getElementById(String(i*width+j)).style.border= '2px solid white';
-            if(bombCount >0){
+            document.getElementById(String(i*width+j)).style.border = '2px solid white';
+            if (bombCount>0) {
                 document.getElementById(String(i*width+j)).innerHTML = bombCount;
             }
-        }
+      }
 
         function timeCount(){
             curTime++;
