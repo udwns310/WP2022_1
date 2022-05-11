@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name ="viewport" content="width=device-width">
+
+    <style>
+        .cell{
+            display:inline-block;
+            border:2px outset;
+            background-color: lightgray;
+            width: 15px;
+            height: 15px;
+            margin: 0px 0px;
+        }
+        @font-face {
+            font-family: 'LAB디지털';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        #time{
+            font-family: 'LAB디지털';
+            font-size: 25px;
+            color : red;
+        }
+        #bomb{
+            font-family: 'LAB디지털';
+            font-size: 25px;
+            color : red;
+            
+        }
+        .top{
+            text-align: center;
+        }
+        #reset{
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div style="border:2px outset; padding: 5px; width:574px;" >
+    <div class=top style="border: 2px inset; padding: 5px; width: 560px; background-color: lightgray;">
+       <span id="bomb">000</span>
+        <button id='reset' style="background-color: #BDBDBD;"><img src="smile.png"></img></button>
+        <span id="time">000</span>
+    </div>
+    <div style='line-height:10px; border: 2px inset;'>
+    <script>
+        const width = 30;
+        const height = 16;
+        const arraySize= width * height;
+        let isStarted = false;
+        const nBombs=99;
+        let curTime=0;
+
+        var cells = Array(arraySize); //0: empty, 1: bomb, 2: checked bomb (closed) / 10, 11, 12 (open)
+        cells.fill(0);
+
+        for(i=0; i< height; i++){
+            for(j=0; j<width; j++){
+                id = i * width + j;
+                document.write(`<div class=cell id='${id}' onclick="leftClick(this, '${id}');"></div>`);
+            }
+            document.write("<br/>");
+        }
+
+        function leftClick(element, id){
+            const i = parseInt(id / width);
+            const j = id % width;
+            let ii, jj;
+            if(isStarted == false){
+                for(k=0; k<nBombs; k++){
+                    ii = i; jj= j;
+                    while((ii-i) * (ii-i) < 2) ii= Math.floor((Math.random() * height));
+                    while((jj-j) * (jj-j) < 2) jj= Math.floor((Math.random() * width));
+                    document.getElementById(String(ii * width + jj)).style.backgroundColor = 'black';
+                    cells[ii * width + jj] = 1;
+                }
+                myInterval = setInterval(timeCount, 1000);
+                isStarted == true;
+            }
+            else{
+                openCell(i, j);
+
+            }
+        }
+        function openCell(i,j){
+            if(cells[i*width+j]<2) return;
+            if(cells[i*width+j] ==1) alert;
+            let bombCount=0;
+            let ii;
+            let jj;
+            for (let k=0; k<8; k++){
+                ii = i + neighbor[k][0];
+                jj = i + neighbor[k][1];
+                if(ii<0 || ii >= height) continue;
+                if(jj<0 || jj >= width) continue;
+                if(cells[ii*width+jj] ==1) bombCount++;
+                
+            }
+            document.getElementById(String(i*width+j)).style.border= '2px solid white';
+            if(bombCount >0){
+                document.getElementById(String(i*width+j)).innerHTML = bombCount;
+            }
+        }
+
+        function timeCount(){
+            curTime++;
+            document.getElementById('time').innerHTML=leadingZeros(curTime, 3)
+        }
+        function leadingZeros(n, digits){
+            var zero = '';
+            n = n.toString();
+            if(n.length < digits){
+                for(var i =0; i<digits - n.length; i++){
+                    zero += 0;
+                }
+            }
+            return zero + n;
+
+        }
+        
+     
+
+    </script>
+    </div>
+    
+</body>
+</html>
