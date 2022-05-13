@@ -119,7 +119,7 @@ function gameOver(){
         for(let j =0; j < width; j++){
             id = i * width + j;
             if(cells[id] = 1){
-                document.getElementById(String(id)).innerHTML = "<span class='bomb'>◎</span>";
+                document.getElementById(String(id)).innerHTML = "<span class='bomb'>끝</span>";
             }
             if(cells[id] == 0 && checked[id]==1){
                 document.getElementById(String(id)).style.backgroundColor= 'red';
